@@ -1,19 +1,13 @@
 import { UserModel } from "../models/users";
-import isEmpty from "../validation/is-empty";
 
-async function createUser(
-  name: string,
-  email: string,
-  active: boolean
-) {
+async function createUser(data:any) {
   try {
-    const count = await UserModel.countDocuments();
+    const { name,email,active} =data
     const user = await UserModel.create({
       name,
       email,
       active,
     });
-
     return user;
   } catch (err) {
     throw err;
@@ -61,7 +55,14 @@ async function fetchUsers(
     throw err;
   }
 }
-
+async function fetchUserByEmail(email: string) {
+  try {
+    const users = await UserModel.find({ email: email });
+    return users;
+  } catch (err) {
+    throw err;
+  }
+}
 async function fetchUserById(id: string) {
   try {
     const user: any = await UserModel.findById(id)
@@ -119,4 +120,5 @@ module.exports = {
   fetchUsers,
   updateUserById,
   fetchUserById,
+  fetchUserByEmail
 };

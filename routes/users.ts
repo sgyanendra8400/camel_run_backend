@@ -1,4 +1,4 @@
-export { };
+export {};
 import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator";
 import passport from "passport";
@@ -8,10 +8,9 @@ const route = Router();
 const {
   createUser,
   fetchUsers,
-  fetchUserByPhone,
+  fetchUserByEmail,
   fetchUserById,
   updateUserById,
- 
 } = require("../controllers/users.ts");
 
 import isEmpty from "../validation/is-empty";
@@ -23,21 +22,13 @@ const bcrypt = require("bcryptjs");
 //access private
 route.get("/", async (req: Request, res: Response) => {
   const {
-    query: {
-      pageSize,
-      pageNumber,
-      pagination,
-    },
+    query: { pageSize, pageNumber, pagination },
   } = req;
   let users = null;
 
   const pageSizeNext = Number(pageSize) || 10;
   const page = Number(pageNumber) || 1;
-  users = await fetchUsers(
-    pageSizeNext,
-    page,
-    pagination,
-  );
+  users = await fetchUsers(pageSizeNext, page, pagination);
   if (users.isSuccess && users.users.length) {
     res.status(200).json({
       isSuccess: users.isSuccess,
@@ -63,15 +54,11 @@ route.get("/:id", async (req: Request, res: Response) => {
       isSuccess: true,
       msg: "User Found!",
       user: user,
-
     });
   } catch (err) {
     throw err;
   }
 });
-
-
-
 
 route.put(
   "/:id",
@@ -90,7 +77,6 @@ route.put(
             msg: "Please Fill the Required Field!",
           });
         } else {
-
           if (req.body.token) {
             const payload = {
               name: user.name,
@@ -130,45 +116,26 @@ route.put(
   }
 );
 
-
-
-route.post(
-  "/requestOtp",
-  validateUserRegisterInput,
-  async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      res.status(401).json({ errors: errors.array() });
-    } else {
-      try {
-        const { phone } = req.body;
-        const user = await fetchUserByPhone(phone);
-          if (isEmpty(user)) {
-            //sign up
-            createUser("", "", "", phone, "", "", "", "");
-            res.status(200).json({
-              is_success: true,
-              msg: "Otp send successfully",
-            });
-          } else {
-            res.status(200).json({
-              is_success: true,
-              msg: "Otp send successfully",
-
-            });
-          }
-       
-      } catch (err) {
-        throw err;
+route.post("/", async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    res.status(401).json({ errors: errors.array() });
+  } else {
+    try {
+      if (isEmpty(req?.body)) {
+        res.status(200).json({ status: 0, msg: "some inputs are required!" });
       }
+      const user = await fetchUserByEmail(req?.body?.email);
+      if (isEmpty(user)) {
+        createUser(req.body);
+        res.status(200).json({ status: 1, msg: "user created!" });
+      } else {
+        res.status(200).json({ status: 0, msg: "user already exist!" });
+      }
+    } catch (err) {
+      throw err;
     }
   }
-);
-
-
-
-
-
-
+});
 
 module.exports = route;
