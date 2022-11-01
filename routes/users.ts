@@ -31,7 +31,7 @@ route.get("/", async (req: Request, res: Response) => {
   users = await fetchUsers(pageSizeNext, page, pagination);
   if (users.isSuccess && users.users.length) {
     res.status(200).json({
-      isSuccess: users.isSuccess,
+      status: 1,
       msg: "User Found!",
       count: users.count,
       page: users.page,
@@ -40,7 +40,7 @@ route.get("/", async (req: Request, res: Response) => {
     });
   } else {
     res.status(200).json({
-      isSuccess: users.isSuccess,
+      status: 0,
       count: users.count,
       msg: "User Not Found!",
     });
@@ -90,7 +90,7 @@ route.put(
               (err: any, token: any) => {
                 if (!err) {
                   res.json({
-                    is_success: true,
+                    status: true,
                     msg: "User Updated successfully",
                     token: "Bearer " + token,
                     user: payload,

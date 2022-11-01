@@ -1,11 +1,25 @@
 import { UserModel } from "../models/users";
 
-async function createUser(data:any) {
+async function createUser(data: any) {
   try {
-    const { name,email,active} =data
+    const {
+      name,
+      email,
+      no_of_nfts_owned,
+      nfts_token_id,
+      wallet,
+      winnings,
+      lossings,
+      active,
+    } = data;
     const user = await UserModel.create({
       name,
       email,
+      no_of_nfts_owned,
+      nfts_token_id,
+      wallet,
+      winnings,
+      lossings,
       active,
     });
     return user;
@@ -14,27 +28,21 @@ async function createUser(data:any) {
   }
 }
 
-
-
-async function fetchUsers(
-  pageSize: number,
-  page: number,
-  pagination: boolean,
-) {
+async function fetchUsers(pageSize: number, page: number, pagination: boolean) {
   try {
     let users = null;
     const dataAndTime = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Calcutta",
     });
     let query: any = {};
- 
+
     const todayDate = dataAndTime.split(",")[0];
 
     const count = await UserModel.count(query);
     users = await UserModel.find(query)
       .limit(pageSize)
       .sort({ createdAt: -1 })
-      .skip(pageSize * (page - 1))
+      .skip(pageSize * (page - 1));
 
     if (pagination) {
       return {
@@ -65,7 +73,7 @@ async function fetchUserByEmail(email: string) {
 }
 async function fetchUserById(id: string) {
   try {
-    const user: any = await UserModel.findById(id)
+    const user: any = await UserModel.findById(id);
 
     return user;
   } catch (err) {
@@ -108,17 +116,10 @@ async function updateUserById(id: string, data: any) {
   }
 }
 
-
-
-
-
-
-
-
 module.exports = {
   createUser,
   fetchUsers,
   updateUserById,
   fetchUserById,
-  fetchUserByEmail
+  fetchUserByEmail,
 };
