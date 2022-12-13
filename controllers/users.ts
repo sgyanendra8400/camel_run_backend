@@ -1,4 +1,5 @@
 import { UserModel } from "../models/users";
+const EventGenerator = require('event-generator');
 
 async function createUser(data: any) {
   try {
@@ -30,6 +31,15 @@ async function createUser(data: any) {
 
 async function fetchUsers(pageSize: number, page: number, pagination: boolean) {
   try {
+
+    const emitter = new EventGenerator();
+    
+    setTimeout(() => emitter.emit('event', 'Hello!', true), 1);
+    for await (const event of emitter.listen('event')) {
+      console.log(event);
+    }
+    emitter.destroy();
+
     let users = null;
     const dataAndTime = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Calcutta",
