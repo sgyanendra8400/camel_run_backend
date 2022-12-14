@@ -15,12 +15,12 @@ async function createRace() {
       {
         title: "Titan-10",
         race_time: new Date(Date.now() + 2 * 60 * 1000).toLocaleTimeString(),
-        time_counter: new Date(Date.now() + 3 * 60 * 1000), //new Date(Date.now() + (2 * 60 * 1000)),
+        time_counter: new Date(Date.now() + 1 * 60 * 1000), //new Date(Date.now() + (2 * 60 * 1000)),
       },
       {
         title: "Galactica",
         race_time: new Date(Date.now() + 3 * 60 * 1000).toLocaleTimeString(),
-        time_counter: new Date(Date.now() + 4 * 60 * 1000), // new Date(Date.now() + (3 * 60 * 1000)),
+        time_counter: new Date(Date.now() + 1 * 60 * 1000), // new Date(Date.now() + (3 * 60 * 1000)),
       },
     ];
 
