@@ -1,8 +1,11 @@
 import { Schema, model, ObjectId } from "mongoose";
-import mongoose from "mongoose";
 
 interface User {
   name: string;
+  last_name:string,
+  password:string,
+  wallet_data_bep2:string,
+  user_type:string,
   email: string;
   no_of_nfts_owned: number;
   nfts_token_id: Array<string>;
@@ -11,10 +14,13 @@ interface User {
   lossings: number;
   active: boolean;
 }
-
 const schema = new Schema<User>(
   {
     name: { type: String, required: false},
+    last_name: { type: String, required: false},
+    password: { type: String, required: false},
+    wallet_data_bep2: { type: String, required: false},
+    user_type: { type: String, required: false},
     email: {type: String,required: false},
     no_of_nfts_owned: {type: Number,default:0,  required: false},
     nfts_token_id: [{type: String,required: false}],

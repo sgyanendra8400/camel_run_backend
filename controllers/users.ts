@@ -1,10 +1,13 @@
 import { UserModel } from "../models/users";
-const EventGenerator = require('event-generator');
 
 async function createUser(data: any) {
   try {
     const {
       name,
+      last_name,
+      password,
+      wallet_data_bep2,
+      user_type,
       email,
       no_of_nfts_owned,
       nfts_token_id,
@@ -15,6 +18,10 @@ async function createUser(data: any) {
     } = data;
     const user = await UserModel.create({
       name,
+      last_name,
+      password,
+      wallet_data_bep2,
+      user_type,
       email,
       no_of_nfts_owned,
       nfts_token_id,
@@ -31,14 +38,6 @@ async function createUser(data: any) {
 
 async function fetchUsers(pageSize: number, page: number, pagination: boolean) {
   try {
-
-    const emitter = new EventGenerator();
-    
-    setTimeout(() => emitter.emit('event', 'Hello!', true), 1);
-    for await (const event of emitter.listen('event')) {
-      console.log(event);
-    }
-    emitter.destroy();
 
     let users = null;
     const dataAndTime = new Date().toLocaleString("en-US", {

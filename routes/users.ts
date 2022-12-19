@@ -51,7 +51,7 @@ route.get("/:id", async (req: Request, res: Response) => {
   try {
     const user = await fetchUserById(req.params.id);
     res.status(200).json({
-      isSuccess: true,
+      status: 1,
       msg: "User Found!",
       user: user,
     });
@@ -73,42 +73,17 @@ route.put(
         const user = await updateUserById(req.params.id, req.body);
         if (isEmpty(req.body)) {
           res.json({
-            is_success: true,
+            status: 0,
             msg: "Please Fill the Required Field!",
           });
         } else {
-          if (req.body.token) {
-            const payload = {
-              name: user.name,
-              email: user.email,
-              type: user.type,
-            };
-            jwt.sign(
-              payload,
-              config.secretOrKey,
-              { expiresIn: 36000 },
-              (err: any, token: any) => {
-                if (!err) {
-                  res.json({
-                    status: true,
-                    msg: "User Updated successfully",
-                    token: "Bearer " + token,
-                    user: payload,
-                    userId: user._id,
-                  });
-                } else {
-                  res.json({ msg: "Error generating token" });
-                }
-              }
-            );
-          } else {
             res.status(200).json({
               isSuccess: true,
-              msg: "User Updated successfully",
+              msg: "User Updated successfully!",
               user: user,
             });
           }
-        }
+        
       } catch (err) {
         throw err;
       }
@@ -138,4 +113,59 @@ route.post("/", async (req: Request, res: Response) => {
   }
 });
 
+
+route.post(
+  "/login",
+  // validateUserLoginInput,
+  async (req: Request, res: Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.status(401).json({ errors: errors.array() });
+    } else {
+      const {email, password } = req.body;
+   
+        const users = await fetchUserByEmail(email);
+        if (isEmpty(users)) {
+          return res.status(401).json({ errors: [{ msg: "User Not Found" }] });
+        }
+        const user = users[0];
+        //Check Password
+        bcrypt.compare(password, user.password).then((isMatch: Boolean) => {
+          if (isMatch) {
+            const payload = {
+              userId: user._id,
+              name: user.name,
+              email: user.email,
+              type: user.type,
+            };
+            jwt.sign(
+              payload,
+              config.secretOrKey,
+              { expiresIn: 36000 },
+              (err: any, token: any) => {
+                if (!err) {
+                  res.json({
+                    status: 1,
+                    msg: "Login Successfully",
+                    token: "Bearer " + token,
+                    user_id: user._id,
+                    user: {
+                      userId: user._id,
+                      email: user.email,
+                      type: "user",
+                    },
+                  });
+                } else {
+                  res.json({ msg: "Error generating token" });
+                }
+              }
+            );
+          } else {
+            res.status(400).json({ password: "password Incorrect" });
+          }
+        });
+      
+    }
+  }
+);
 module.exports = route;
