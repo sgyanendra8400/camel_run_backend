@@ -125,6 +125,7 @@ route.post(
       const {email, password } = req.body;
    
         const users = await fetchUserByEmail(email);
+        console.log(users,'users')
         if (isEmpty(users)) {
           return res.status(401).json({ errors: [{ msg: "User Not Found" }] });
         }

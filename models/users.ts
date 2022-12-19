@@ -1,4 +1,5 @@
 import { Schema, model, ObjectId } from "mongoose";
+const bcrypt = require("bcryptjs");
 
 interface User {
   name: string;
@@ -40,5 +41,12 @@ const schema = new Schema<User>(
     toObject: { virtuals: true },
   }
 );
+schema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
 
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
 export const UserModel = model<User>("User", schema);
