@@ -2,7 +2,7 @@ import { Schema, model, ObjectId } from "mongoose";
 const bcrypt = require("bcryptjs");
 
 interface User {
-  name: string;
+  first_name: string;
   last_name: string;
   password: string;
   wallet_data_bep2: string;
@@ -10,6 +10,7 @@ interface User {
   dob: string;
   confirm_correctness: boolean;
   telegram: string;
+  nick_name:string,
   email: string;
   no_of_nfts_owned: number;
   nfts_token_id: Array<string>;
@@ -20,7 +21,7 @@ interface User {
 }
 const schema = new Schema<User>(
   {
-    name: { type: String, required: false },
+    first_name: { type: String, required: false },
     last_name: { type: String, required: false },
     password: { type: String, required: false },
     wallet_data_bep2: { type: String, required: false },
@@ -28,6 +29,7 @@ const schema = new Schema<User>(
     dob: { type: String, required: false },
     confirm_correctness: { type: Boolean, required: false },
     email: { type: String, required: false },
+    nick_name: { type: String, required: false },
     no_of_nfts_owned: { type: Number, default: 0, required: false },
     nfts_token_id: [{ type: String, required: false }],
     wallet: { type: String, required: false },

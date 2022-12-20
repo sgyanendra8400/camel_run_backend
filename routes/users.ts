@@ -127,7 +127,7 @@ route.post(
         const users = await fetchUserByEmail(email);
         console.log(users,'users')
         if (isEmpty(users)) {
-          return res.status(401).json({ errors: [{ msg: "User Not Found" }] });
+          return   res.status(200).json({ status: 0, msg: "User Not Found!" });
         }
         const user = users[0];
         //Check Password
@@ -162,8 +162,7 @@ route.post(
               }
             );
           } else {
-            res.status(400).json({ password: "password Incorrect" });
-          }
+            res.status(200).json({ status: 0, msg: "password Incorrect!" });          }
         });
       
     }
