@@ -27,6 +27,7 @@ const schema = new Schema<User>(
     wallet_data_bep2: { type: String, required: false },
     user_type: { type: String, required: false },
     dob: { type: String, required: false },
+    telegram: { type: String, required: false },
     confirm_correctness: { type: Boolean, required: false },
     email: { type: String, required: false },
     nick_name: { type: String, required: false },
