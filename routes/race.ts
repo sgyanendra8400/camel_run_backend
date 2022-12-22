@@ -87,7 +87,6 @@ route.post("/", async (req: Request, res: Response) => {
           createRace(req.body);
           res.status(200).json({ status: 1, msg: "Race created!" });
       }
-     
     } catch (err) {
       throw err;
     }
