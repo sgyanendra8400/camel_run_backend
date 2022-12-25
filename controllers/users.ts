@@ -3,7 +3,15 @@ import { UserModel } from "../models/users";
 async function createUser(data: any) {
   try {
     const {
-      name,
+      first_name,
+      last_name,
+      password,
+      wallet_data_bep2,
+      user_type,
+      dob,
+      confirm_correctness,
+      telegram,
+      nick_name,
       email,
       no_of_nfts_owned,
       nfts_token_id,
@@ -13,7 +21,15 @@ async function createUser(data: any) {
       active,
     } = data;
     const user = await UserModel.create({
-      name,
+      first_name,
+      last_name,
+      password,
+      wallet_data_bep2,
+      user_type,
+      dob,
+      confirm_correctness,
+      telegram,
+      nick_name,
       email,
       no_of_nfts_owned,
       nfts_token_id,
@@ -30,6 +46,7 @@ async function createUser(data: any) {
 
 async function fetchUsers(pageSize: number, page: number, pagination: boolean) {
   try {
+
     let users = null;
     const dataAndTime = new Date().toLocaleString("en-US", {
       timeZone: "Asia/Calcutta",
