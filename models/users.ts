@@ -1,6 +1,5 @@
 import { Schema, model, ObjectId } from "mongoose";
 import mongoose from "mongoose";
-
 interface User {
   name: string;
   email: string;
@@ -11,7 +10,6 @@ interface User {
   lossings: number;
   active: boolean;
 }
-
 const schema = new Schema<User>(
   {
     name: { type: String, required: false},
@@ -28,6 +26,5 @@ const schema = new Schema<User>(
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
-);
-
+)
 export const UserModel = model<User>("User", schema);

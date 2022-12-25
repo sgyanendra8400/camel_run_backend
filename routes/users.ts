@@ -1,7 +1,7 @@
-export {};
+// export {};
 import { Request, Response, Router } from "express";
 import { validationResult } from "express-validator";
-import passport from "passport";
+// import passport from "passport";
 import { UserModel } from "../models/users";
 
 const route = Router();
@@ -19,6 +19,7 @@ import validateUserRegisterInput from "../validation/register-user";
 const jwt = require("jsonwebtoken");
 const config = require("../config/keys");
 const bcrypt = require("bcryptjs");
+
 //access private
 route.get("/", async (req: Request, res: Response) => {
   const {
