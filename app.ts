@@ -1,4 +1,5 @@
 import express from "express";
+import firebaseApi from "./controllers/firebase";
 const app = express();
 require("dotenv").config();
 const log = require("debug")("app:run");
@@ -51,7 +52,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use("/", require("./routes"));
-
+// firebaseApi();
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "public")));
 } else {
