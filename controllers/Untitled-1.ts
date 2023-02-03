@@ -68,7 +68,7 @@ async function createRace() {
         },
       ],
     });
-    var end = new Date(new Date().getTime() + 500 * race.time_counter);
+    var end = new Date(new Date().getTime() + 1000 * race.time_counter);
     var timer = Countdown.timer(
       end,
       function (timeLeft: any) {
@@ -89,7 +89,7 @@ async function createRace() {
       },
       async function () {
         race = await updateRaceById(race.id, { participation: true });
-        var end = new Date(new Date().getTime() + 500 * race.time_counter);
+        var end = new Date(new Date().getTime() + 1000 * race.time_counter);
         var timer = Countdown.timer(
           end,
           function (timeLeft: any) {
@@ -109,80 +109,9 @@ async function createRace() {
             update(messagesRef, { race: [data] });
           },
          async function () {
-          race = await updateRaceById(race.id, { prediction: true });
-          var end = new Date(new Date().getTime() + 500 * race.time_counter);
-          var timer = Countdown.timer(
-            end,
-            function (timeLeft: any) {
-              let data = {
-                time_counter: `End in ${timeLeft.hours}h | ${timeLeft.minutes}m | ${timeLeft.seconds}s`, // new Date(Date.now() + (3 * 60 * 1000)),
-                // title: race?.title || "Galactica",
-                // race_time: new Date(Date.now() + 3 * 60 * 1000).toLocaleTimeString(),
-                title: race.title,
-                race_time: race.race_time,
-                // time_counter: race.time_counter,
-                gate_status: race.gate_status,
-                participation_status: race.participation_status,
-                predict_status: race.predict_status,
-                live: race.live,
-                active: race.active,
-              };
-              update(messagesRef, { race: [data] });
-              
-            },
-           async function () {
-            race = await updateRaceById(race.id, { live: true });
-            var end = new Date(new Date().getTime() + 500 * race.time_counter);
-            var timer = Countdown.timer(
-              end,
-              function (timeLeft: any) {
-                let data = {
-                  time_counter: `End in ${timeLeft.hours}h | ${timeLeft.minutes}m | ${timeLeft.seconds}s`, // new Date(Date.now() + (3 * 60 * 1000)),
-                  // title: race?.title || "Galactica",
-                  // race_time: new Date(Date.now() + 3 * 60 * 1000).toLocaleTimeString(),
-                  title: race.title,
-                  race_time: race.race_time,
-                  // time_counter: race.time_counter,
-                  gate_status: race.gate_status,
-                  participation_status: race.participation_status,
-                  predict_status: race.predict_status,
-                  live: race.live,
-                  active: race.active,
-                };
-                update(messagesRef, { race: [data] });
-              },
-             async function () {
-              race = await updateRaceById(race.id, { race: true });
-              var end = new Date(new Date().getTime() + 500 * race.time_counter);
-              var timer = Countdown.timer(
-                end,
-                function (timeLeft: any) {
-                  let data = {
-                    time_counter: `End in ${timeLeft.hours}h | ${timeLeft.minutes}m | ${timeLeft.seconds}s`, // new Date(Date.now() + (3 * 60 * 1000)),
-                    // title: race?.title || "Galactica",
-                    // race_time: new Date(Date.now() + 3 * 60 * 1000).toLocaleTimeString(),
-                    title: race.title,
-                    race_time: race.race_time,
-                    // time_counter: race.time_counter,
-                    gate_status: race.gate_status,
-                    participation_status: race.participation_status,
-                    predict_status: race.predict_status,
-                    live: race.live,
-                    active: race.active,
-                  };
-                  update(messagesRef, { race: [data] });
-                },
-               async function () {
-                  
-      
-                }
-              );
-    
-              }
-            );
-  
-            }
-          );
+             race = await updateRaceById(race.id, { prediction: true });
+            update(messagesRef, { race: [race] });
+
           }
         );
       }
@@ -258,7 +187,6 @@ async function updateRaceById(id: string, data: any) {
       } else if (data?.prediction) {
         race.participation_status = false;
         race.predict_status = true;
-
       } else if (data?.live) {
         race.participation_status = false;
         race.predict_status = false;
@@ -269,7 +197,6 @@ async function updateRaceById(id: string, data: any) {
         race.live = false;
         race.active = false;
         createRace();
-
       }
     }
     race.save();
