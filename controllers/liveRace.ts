@@ -1,4 +1,4 @@
-import { RaceModel } from "../models/race";
+import { LiveRaceModel } from "../models/liveRace";
 import moment from "moment";
 import isEmpty from "../validation/is-empty";
 import {
@@ -13,8 +13,6 @@ import {
   onValue,
 } from "firebase/database";
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { PredictRaceModel } from "../models/predictRace";
-import { LiveRaceModel } from "../models/liveRace";
 var Countdown = require("countdown-js");
 const firebaseConfig = {
   apiKey: "AIzaSyAJoOm3k--r8mb4b16-kvtFB8e7WqmsG_U",
@@ -31,39 +29,39 @@ const database = getDatabase(app);
 let messagesRef = ref(database, "/");
 async function createRace() {
   try {
-    let startTime = moment().format("HH:mm:ss");
+    // const { title, race_time, time_counter, active } = data;
+    let startTime = moment().format('HH:mm:ss');
+
     const CAMEL_RACE = [
       {
         title: "Neo Dubai",
         race_time: new Date(Date.now() + 1 * 60 * 2000).toLocaleTimeString(),
-        time: moment(startTime, "HH:mm:ss a")
-          .add(30, "minutes")
-          .format("HH:mm:ss a"),
-        image:
-          "https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/MegaCity1.png",
+        // time_counter: new Date(Date.now() + 1 * 60 * 1000),
+        time_counter: 30,
+        time:moment(startTime ,'HH:mm:ss a').add(2,'minutes').format('HH:mm:ss a'),
+        image:"https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/MegaCity1.png"
       },
       {
         title: "Titan-10",
         race_time: new Date(Date.now() + 2 * 60 * 3000).toLocaleTimeString(),
-        time: moment(startTime, "HH:mm:ss a")
-          .add(60, "minutes")
-          .format("HH:mm:ss a"),
-        image:
-          "https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/Titan-10.png",
+        time_counter: 30, //new Date(Date.now() + (2 * 60 * 1000)),
+        time:moment(startTime ,'HH:mm:ss a').add(2,'minutes').format('HH:mm:ss a'),
+        image:"https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/Titan-10.png"
       },
       {
         title: "Galactica",
         race_time: new Date(Date.now() + 3 * 60 * 1000).toLocaleTimeString(),
-        time: moment(startTime, "HH:mm:ss a")
-          .add(90, "minutes")
-          .format("HH:mm:ss a"),
-        image:
-          "https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/Galactica.png",
+        time_counter: 30, // new Date(Date.now() + (3 * 60 * 1000)),
+        time:moment(startTime ,'HH:mm:ss a').add(2,'minutes').format('HH:mm:ss a'),
+        image:"https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/Galactica.png"
       },
     ];
-    const randomRaceIndex = Math.floor(Math.random() * CAMEL_RACE.length);
-    var race = await RaceModel.create(CAMEL_RACE[randomRaceIndex]);
 
+    const randomRaceIndex = Math.floor(Math.random() * CAMEL_RACE.length);
+
+    var race = await LiveRaceModel.create(CAMEL_RACE[randomRaceIndex]);
+
+  
     return race;
     return race;
   } catch (err) {
@@ -91,8 +89,8 @@ async function fetchRaces(
       query.$and.push(admin_);
     }
 
-    const count = await RaceModel.count(query);
-    races = await RaceModel.find(query)
+    const count = await LiveRaceModel.count(query);
+    races = await LiveRaceModel.find(query)
       .limit(pageSize)
       .sort({ createdAt: -1 })
       .skip(pageSize * (page - 1));
@@ -119,7 +117,7 @@ async function fetchRaces(
 
 async function fetchRaceById(id: string) {
   try {
-    const race: any = await RaceModel.findById(id);
+    const race: any = await LiveRaceModel.findById(id);
 
     return race;
   } catch (err) {
@@ -127,30 +125,39 @@ async function fetchRaceById(id: string) {
   }
 }
 
-async function updateRaceById(id: string, data: any) {
+async function updateRaceById(id: string,  data: any) {
   try {
-    const race: any = await RaceModel.findById(id);
+    const race: any = await LiveRaceModel.findById(id);
+    console.log(data, "datadata");
     if (race && data) {
       if (data?.participation) {
         race.participation_status = true;
       } else if (data?.prediction) {
         race.participation_status = false;
         race.predict_status = true;
-        race.time = data?.time;
+        race.time = data?.time
+        // createRace()
       } else if (data?.live) {
         race.participation_status = false;
         race.predict_status = false;
         race.live = true;
-        race.time = data?.time;
+        race.time = data?.time
+
       } else if (data?.race) {
-        race.participation_status = false;
-        race.predict_status = false;
-        race.live = false;
-        race.active = false;
+
+        const race: any = await LiveRaceModel.remove({id:id});
+console.log(race,"raceracerace")
+        // race.participation_status = false;
+        // race.predict_status = false;
+        // race.live = false;
+        // race.active = false;
         createRace();
       }
-      race.save();
     }
+    race.save();
+    // createRace()
+    // createRace()
+
     return race;
   } catch (err) {
     throw err;

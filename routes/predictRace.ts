@@ -7,7 +7,7 @@ const {
   fetchRaces,
   fetchRaceById,
   updateRaceById,createRaceTwo
-} = require("../controllers/race.ts");
+} = require("../controllers/predictRace.ts");
 import isEmpty from "../validation/is-empty";
 
 const jwt = require("jsonwebtoken");
@@ -18,7 +18,7 @@ route.get("/", async (req: Request, res: Response) => {
   } = req;
   let race = null;
 
-  const pageSizeNext = Number(pageSize) || 3;
+  const pageSizeNext = Number(pageSize) || 1;
   const page = Number(pageNumber) || 1;
   race = await fetchRaces(pageSizeNext, page, pagination);
   if (race.status && race.race.length) {
