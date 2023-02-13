@@ -37,7 +37,7 @@ async function createRace() {
         title: "Neo Dubai",
         race_time: new Date(Date.now() + 1 * 60 * 2000).toLocaleTimeString(),
         time: moment(startTime, "HH:mm:ss a")
-          .add(30, "minutes")
+          .add(5, "minutes")
           .format("HH:mm:ss a"),
         image:
           "https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/MegaCity1.png",
@@ -46,7 +46,7 @@ async function createRace() {
         title: "Titan-10",
         race_time: new Date(Date.now() + 2 * 60 * 3000).toLocaleTimeString(),
         time: moment(startTime, "HH:mm:ss a")
-          .add(60, "minutes")
+          .add(6, "minutes")
           .format("HH:mm:ss a"),
         image:
           "https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/Titan-10.png",
@@ -55,7 +55,7 @@ async function createRace() {
         title: "Galactica",
         race_time: new Date(Date.now() + 3 * 60 * 1000).toLocaleTimeString(),
         time: moment(startTime, "HH:mm:ss a")
-          .add(90, "minutes")
+          .add(4, "minutes")
           .format("HH:mm:ss a"),
         image:
           "https://came-run.s3.ap-south-1.amazonaws.com/racetrackimages/Resized/Galactica.png",
