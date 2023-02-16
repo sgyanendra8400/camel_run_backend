@@ -35,4 +35,4 @@ const schema = new Schema<Mahaliyat>(
   }
 );
 
-export const MahaliyatModel = model<Mahaliyat>("Mahaliyat", schema);
+export const MahaliyatModel = model<Mahaliyat>("nfts", schema);

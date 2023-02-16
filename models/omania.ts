@@ -35,4 +35,4 @@ const schema = new Schema<Omania>(
   }
 );
 
-export const OmaniaModel = model<Omania>("Omania", schema);
+export const OmaniaModel = model<Omania>("temp_nfts", schema);
