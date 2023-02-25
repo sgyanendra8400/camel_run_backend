@@ -4,7 +4,14 @@ import isEmpty from "../validation/is-empty";
 
 async function create(data: any) {
   try {
-    const result = await OmaniaModel.create(data);
+    let result: any = null;
+    if (data?.length) {
+      for (let i = 0; i < data?.length; i++) {
+        result = await OmaniaModel.create(data[i]);
+      }
+    } else {
+      result = await OmaniaModel.create(data);
+    }
     return result;
   } catch (err) {
     throw err;

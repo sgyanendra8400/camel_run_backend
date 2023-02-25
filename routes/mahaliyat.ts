@@ -55,8 +55,13 @@ route.post("/", async (req: Request, res: Response) => {
       if (isEmpty(req?.body)) {
         res.status(200).json({ status: 0, msg: "some inputs are required!" });
       } else {
-        create(req.body);
-        res.status(200).json({ status: 1, msg: "Data created!" });
+       const response = await  create(req.body);
+       if(!isEmpty(response)){
+         res.status(200).json({ status: 1, msg: "Data created!" });
+       }else{
+        res.status(400).json({ status: 0, msg: "Data Not created!" });
+
+       }
       }
     } catch (err) {
       throw err;
