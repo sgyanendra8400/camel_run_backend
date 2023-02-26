@@ -50,12 +50,20 @@ route.get("/", async (req: Request, res: Response) => {
 
 route.get("/:id", async (req: Request, res: Response) => {
   try {
-    const user = await fetchUserById(req.params.id);
-    res.status(200).json({
-      status: 1,
-      msg: "User Found!",
-      user: user,
-    });
+    if(isEmpty(req.params.id)){
+      res.status(200).json({
+        status: 0,
+        msg: "User Not Found!",
+      });
+    }else{
+
+      const user = await fetchUserById(req.params.id);
+      res.status(200).json({
+        status: 1,
+        msg: "User Found!",
+        user: user,
+      });
+    }
   } catch (err) {
     throw err;
   }
