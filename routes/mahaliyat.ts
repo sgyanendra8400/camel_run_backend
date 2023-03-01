@@ -7,13 +7,13 @@ import isEmpty from "../validation/is-empty";
 
 route.get("/", async (req: Request, res: Response) => {
   const {
-    query: { pageSize, pageNumber, pagination },
+    query: { pageSize, pageNumber, pagination,bloodline},
   } = req;
   let mahaliyat = null;
 
   const pageSizeNext = Number(pageSize) || 3;
   const page = Number(pageNumber) || 1;
-  mahaliyat = await fetch(pageSizeNext, page, pagination);
+  mahaliyat = await fetch(pageSizeNext, page, pagination,bloodline);
 
   if (mahaliyat.isSuccess && mahaliyat.data.length) {
     res.status(200).json({

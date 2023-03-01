@@ -19,12 +19,34 @@ async function create(data: any) {
   }
 }
 
-async function fetch(pageSize: number, page: number, pagination: boolean) {
+async function fetch(
+  pageSize: number,
+  page: number,
+  pagination: boolean,
+  bloodline: any
+) {
   try {
     let data = null;
     let query: any = {};
-    const count = await MahaliyatModel.count(query);
-    data = await MahaliyatModel.find(query)
+    const bloodlineValue =
+      bloodline === "Omania+(Oman)"
+        ? "OmaniaSpecial"
+        : bloodline === "Hainiyat+(Saudi+Arabia)"
+        ? ""
+        : bloodline === "Mahaliyat (UAE)"
+        ? "MahaliyatSpecial"
+        : "";
+    const bloodlineFilter = bloodline
+      ? {
+          attributes: {
+            $elemMatch: { trait_type: "bloodline", value: "HainiyatPremium" },
+          },
+        }
+      : {};
+    const count = await MahaliyatModel.count(bloodlineFilter);
+    console.log(bloodlineFilter, "hhhhhhhhhhhhhhhhhhhhhh");
+    data = await MahaliyatModel.find(bloodlineFilter)
+
       .limit(pageSize)
       .sort({ createdAt: -1 })
       .skip(pageSize * (page - 1));
