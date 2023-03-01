@@ -32,11 +32,11 @@ async function fetch(
       bloodline === "Omania (Oman)"
         ? "OmaniaSpecial"
         : bloodline === "Hainiyat (Saudi Arabia)"
-        ? ""
+        ? "HainiyatSpecial"
         : bloodline === "Mahaliyat (UAE)"
         ? "MahaliyatSpecial"
-        : "all";
-    const bloodlineFilter = bloodline && bloodline !=="all"
+        : "All";
+    const bloodlineFilter = bloodline && bloodline !=="All"
       ? {
           attributes: {
             $elemMatch: { trait_type: "bloodline", value: bloodlineValue },
