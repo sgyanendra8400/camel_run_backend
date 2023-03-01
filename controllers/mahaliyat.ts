@@ -39,7 +39,7 @@ async function fetch(
     const bloodlineFilter = bloodline
       ? {
           attributes: {
-            $elemMatch: { trait_type: "bloodline", value: "HainiyatPremium" },
+            $elemMatch: { trait_type: "bloodline", value: bloodlineValue },
           },
         }
       : {};
