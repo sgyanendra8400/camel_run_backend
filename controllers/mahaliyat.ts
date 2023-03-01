@@ -29,13 +29,13 @@ async function fetch(
     let data = null;
     let query: any = {};
     const bloodlineValue =
-      bloodline === "Omania+(Oman)"
+      bloodline === "Omania (Oman)"
         ? "OmaniaSpecial"
-        : bloodline === "Hainiyat+(Saudi+Arabia)"
+        : bloodline === "Hainiyat (Saudi+Arabia)"
         ? ""
         : bloodline === "Mahaliyat (UAE)"
         ? "MahaliyatSpecial"
-        : "";
+        : undefined;
     const bloodlineFilter = bloodline
       ? {
           attributes: {
